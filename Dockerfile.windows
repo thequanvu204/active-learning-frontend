@@ -1,0 +1,14 @@
+# Basis-Image für Windows (mit vorinstalliertem IIS)
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-ltsc2022 AS windows_base
+
+# Setze das Arbeitsverzeichnis und kopiere Dateien
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+
+# Kopiere die App-Dateien direkt ins wwwroot
+COPY ./dist C:/inetpub/wwwroot/
+
+# Exponiere Port 80
+EXPOSE 80
+
+# Starte den IIS-Webserver
+CMD ["powershell", "Start-Service", "W3SVC", ";", "Wait-Process", "W3SVC"]

@@ -1,0 +1,18 @@
+# Basis-Image für Linux
+FROM nginx:alpine AS linux_base
+
+# Setze das Arbeitsverzeichnis
+WORKDIR /usr/share/nginx/html
+
+# Entferne Standard-HTML-Dateien
+RUN rm -rf ./*
+
+# Kopiere die App-Dateien
+COPY ./dist /usr/share/nginx/html/
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exponiere Port 80
+EXPOSE 80
+
+# Starte den Webserver
+CMD ["nginx", "-g", "daemon off;"]
